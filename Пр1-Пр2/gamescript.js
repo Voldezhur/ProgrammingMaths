@@ -1,3 +1,4 @@
+// Размеры поля
 let canvasHeight = 400;
 let canvasWidth = 600;
 
@@ -7,6 +8,7 @@ let ballSize = 60;
 
 let gameRunning = false;
 
+// Создание игрового поля
 let gameCanvas = {
     canvas: document.createElement("canvas"),
     start: function() {
@@ -18,15 +20,16 @@ let gameCanvas = {
     }
 }
 
-
+// Инициализация игрока
 let player;
 
-let players = [];
+let players = [];  // Инициализация массива для второй практики
 
+// Начальная позиция игрока
 let playerYPosition = 200;
 let playerXPosition = 400;
 
-let interval = setInterval(updateCanvas, 20);
+let interval = setInterval(updateCanvas, 20);  // Обновление поля каждые 20 миллисекунд
 
 let gameBeginText = document.createElement('h1');
 gameBeginText.classList.add('sectionTitle');
@@ -44,6 +47,7 @@ document.addEventListener('keydown', (event) => {
             startGame();
         }
 
+        // Если игра уже запущена, пробел добавляет еще один шарик на поле
         else {
             let newPlayer = new createPlayer();
             players.push(newPlayer);
@@ -62,16 +66,19 @@ function createPlayer() {
     this.yVelocity = ballSpeed;
     this.xVelocity = ballSpeed;
 
+    // Функция прорисовки шарика
     this.draw = function() {
         ctx = gameCanvas.context;
         ctx.fillStyle = "#" + this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
+    // Функция передвижения шарика
     this.movePlayer = function() {
         this.y += this.yVelocity;
         this.x += this.xVelocity;
 
+        // Проверка столкновения со стенами
         var ground = canvasHeight - this.height;
         var ceiling = 0;
         var rightWall = canvasWidth - this.width;
@@ -86,6 +93,7 @@ function createPlayer() {
         }
     }
 
+    // Функция проверки столкновений с другими шариками
     this.checkCollision = function() {
         players.forEach(player => {
             if (this.x > player.x && this.x < player.x + player.width && this.y > player.y && this.y < player.y + player.height)
@@ -115,7 +123,7 @@ function createPlayer() {
     }
 }
 
-// function update the canvas
+// Функция обновления поля
 function updateCanvas() {    
     ctx = gameCanvas.context;
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -127,7 +135,7 @@ function updateCanvas() {
     });
 }
 
-// start game
+// Функция начала игры
 function startGame() {
     gameCanvas.start();
     player = new createPlayer();
